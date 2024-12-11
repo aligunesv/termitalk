@@ -23,54 +23,100 @@ TermiTalk is a lightweight Node.js-based application that allows anonymous messa
 ## Installation  
 
 1. Clone the repository:  
-   ```bash
-   git clone https://github.com/aligunesv/termitalk.git
-   cd termitalk
+   ```bash  
+   git clone https://github.com/aligunesv/termitalk.git  
+   cd termitalk  
    ```
 
 2. Install dependencies:  
-   ```bash
-   npm install
+   ```bash  
+   npm install  
    ```
 
 3. Update the file path for message storage in `server.js` (default: `C:/Users/Administrator/Desktop/msg/messages.txt`):  
-   ```javascript
-   const msgFilePath = path.join("C:", "Users", "Administrator", "Desktop", "msg", "messages.txt");
+   ```javascript  
+   const msgFilePath = path.join("C:", "Users", "Administrator", "Desktop", "msg", "messages.txt");  
    ```
 
 4. Start the server:  
-   ```bash
-   node server.js
+   ```bash  
+   node server.js  
    ```
 
 ---
 
 ## Usage  
 
-1. Start the server on one device:  
+### Step 1: Start the Server
+1. Open a terminal on the server machine.
+2. Run the following command to start the server:
    ```bash
    node server.js
    ```
+3. The server will listen on port `3500` for incoming connections. You should see a message indicating the server is running.
 
-2. Connect to the server from other devices:  
+### Step 2: Connect Clients to the Server
+1. On another computer in the same network, clone the TermiTalk repository and install dependencies as described above.
+2. Open the `client.js` file in a text editor.
+3. Locate the following line and replace `SERVER_IP` with the IP address of the server (the computer running `server.js`). If you want to test on the same machine, you can use `127.0.0.1` as the IP address:
+   ```javascript
+   client.connect(3500, "SERVER_IP", () => {
+       console.log("Connected to the server. Messages will be shown automatically when updated.");
+       console.log("Write your message:");
+   });
+   ```
+4. Save the changes and run the client with the following command:
    ```bash
-   telnet <server-ip> 3500
+   node client.js
    ```
 
-3. Start sending messages!  
+### Step 3: Start Messaging
+1. Once the client connects to the server, you can start typing your messages directly into the terminal.
+2. Each message you send will:
+   - Be saved in the `messages.txt` file on the server.
+   - Overwrite the previous message in the file.
+   - Be broadcasted to all other connected clients in real time.
+3. All received messages will appear in the client terminal with their unique ID and timestamp.
+
+### Example Interaction
+1. **Server Terminal:**
+   ```bash
+   Server running on port 3500...
+   New message received:
+   ╭────────────────────────────╮
+   │ ID: d4f7f6e0-8b...         │
+   │ Time: 2024-12-11 14:35    │
+   │ Message: Hello Server!     │
+   ╰────────────────────────────╯
+   ```
+2. **Client Terminal:**
+   ```bash
+   Connected to the server. Messages will be shown automatically when updated.
+   Write your message:
+   ```
+   After sending a message:
+   ```bash
+   Your message: Hi there!
+   New message from another user:
+   ╭────────────────────────────╮
+   │ ID: abcd1234-ef...         │
+   │ Time: 2024-12-11 14:37    │
+   │ Message: Hello!            │
+   ╰────────────────────────────╯
+   ```
 
 ---
 
 ## Example Output  
 
 ### Terminal View  
-```bash
-╭────────────────────────────╮
-│ New Message:              │
-│ ID: d4f7f6e0-8b...        │
-│ Time: 2024-12-11 14:35    │
-│ Message: Hello World!     │
-╰────────────────────────────╯
+```bash  
+╭────────────────────────────╮  
+│ New Message:              │  
+│ ID: d4f7f6e0-8b...        │  
+│ Time: 2024-12-11 14:35    │  
+│ Message: Hello World!     │  
+╰────────────────────────────╯  
 ```  
 
 ---
